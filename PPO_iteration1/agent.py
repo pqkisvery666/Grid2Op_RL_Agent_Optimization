@@ -64,35 +64,18 @@ def evaluate_agent(env, agent, num_episodes=10, max_steps=10000):
 
 def plot_evaluation_results(stats):
     """
-    Create visualizations of the evaluation results
+    Create visualization of returns over episodes
     """
-    fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(15, 12))
+    fig, ax = plt.subplots(figsize=(10, 6))
     
-    # Episode Returns Distribution
-    sns.histplot(stats["returns"], ax=ax1)
-    ax1.set_title("Distribution of Episode Returns")
-    ax1.set_xlabel("Return")
-    ax1.set_ylabel("Count")
+    # Returns over Episodes
+    sns.lineplot(x=range(len(stats["returns"])), y=stats["returns"], ax=ax, label='Returns', color='blue')
     
-    # Episode Lengths Distribution
-    sns.histplot(stats["lengths"], ax=ax2)
-    ax2.set_title("Distribution of Episode Lengths")
-    ax2.set_xlabel("Steps")
-    ax2.set_ylabel("Count")
-    
-    # Invalid Actions per Episode
-    sns.barplot(x=list(range(len(stats["invalid_actions"]))), 
-                y=stats["invalid_actions"], ax=ax3)
-    ax3.set_title("Invalid Actions per Episode")
-    ax3.set_xlabel("Episode")
-    ax3.set_ylabel("Number of Invalid Actions")
-    
-    # Termination Reasons
-    reason_counts = pd.Series(stats["termination_reasons"]).value_counts()
-    reason_counts.plot(kind='bar', ax=ax4)
-    ax4.set_title("Episode Termination Reasons")
-    ax4.set_xlabel("Reason")
-    ax4.set_ylabel("Count")
+    ax.set_title("Returns Over Episodes", fontsize=12)
+    ax.set_xlabel("Episode", fontsize=10)
+    ax.set_ylabel("Return", fontsize=10)
+    ax.legend(fontsize=10)
+    ax.grid(True, alpha=0.3)
     
     plt.tight_layout()
     return fig
@@ -133,11 +116,13 @@ def print_summary_statistics(stats):
 
 # Main execution
 if __name__ == "__main__":
-    # Load the agent
-    ppo_agent = PPO.load("PPO_baseline\ppo_Iteration1.zip")
+  
     
     # Create environment
     env = Gym2OpEnv()
+    
+      # Load the agent
+    ppo_agent = PPO.load("PPO_iteration1\ppo_Iteration1.zip")
     
     # Run evaluation
     print("Starting evaluation...")
@@ -148,5 +133,5 @@ if __name__ == "__main__":
     
     # Create and save plots
     fig = plot_evaluation_results(stats)
-    plt.savefig('evaluation_results.png')
+    plt.savefig('evaluation_results_ppo_Iteration1.png')
     plt.close()

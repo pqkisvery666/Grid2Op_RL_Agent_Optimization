@@ -1,13 +1,9 @@
 from env import Gym2OpEnv
 from stable_baselines3.common.vec_env import DummyVecEnv
-from stable_baselines3.common.callbacks import CheckpointCallback
 from stable_baselines3 import PPO
 from stable_baselines3.common.monitor import Monitor
 
-import os
-import torch
-
-logdir = "PPO_improved/logs"
+logdir = "PPO_logs/logs"
 
 def train_ppo_agent(env, total_timesteps=1000000):
 
@@ -22,7 +18,7 @@ def train_ppo_agent(env, total_timesteps=1000000):
     
     model.learn(total_timesteps=total_timesteps)
     
-    model.save("PPO_iteration_one\masked_ppo_simple.zip")
+    model.save("PPO_iteration_one\ppo_baseline.zip")
 
     return model
 

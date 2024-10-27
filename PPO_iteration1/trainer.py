@@ -7,25 +7,16 @@ from stable_baselines3.common.monitor import Monitor
 import os
 import torch
 
-logdir = "PPO_improved/logs"
+logdir = "PPO_logs/logs"
 
 def train_ppo_agent(env, total_timesteps=1000000):
 
     env = DummyVecEnv([lambda: env])
-    
-    # policy_kwargs = dict(
-    #     net_arch=dict(
-    #         pi=[256, 256],  # Policy network
-    #         vf=[256, 256]   # Value function network
-    #     ),
-    #     activation_fn=torch.nn.ReLU
-    # )
 
     model = PPO(
         "MlpPolicy",
         env,
         verbose=1,
-        # policy_kwargs=policy_kwargs,
         tensorboard_log=logdir
         )
     
