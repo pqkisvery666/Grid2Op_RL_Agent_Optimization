@@ -33,7 +33,6 @@ def evaluate_agent(env, agent, num_episodes=10, max_steps=10000):
             curr_return += reward
             all_rewards.append(reward)
 
-            # Track invalid actions
             is_action_valid = not (info["is_illegal"] or info["is_ambiguous"])
             if not is_action_valid:
                 invalid_actions += 1
@@ -70,7 +69,6 @@ def plot_evaluation_results(stats):
     """
     fig, ax = plt.subplots(figsize=(10, 6))
     
-    # Returns over Episodes
     sns.lineplot(x=range(len(stats["returns"])), y=stats["returns"], ax=ax, label='Returns', color='blue')
     
     ax.set_title("Returns Over Episodes", fontsize=12)
@@ -118,24 +116,17 @@ def print_summary_statistics(stats):
     print("###################")
 
 
-# Main execution
 if __name__ == "__main__":
-    # Load the agent
     
 
-    # Create environment
     env = Gym2OpEnv()
     
     sac_agent = SAC.load("SAC_baseline\sac_baseline_model")
 
-    # Run evaluation
     print("Starting evaluation...")
     stats = evaluate_agent(env, sac_agent, num_episodes=100, max_steps=10000)
 
-    # Print statistics
     print_summary_statistics(stats)
-
-    # Create and save plots
     fig = plot_evaluation_results(stats)
     plt.savefig('evaluation_results_SAC_baseline.png')
     plt.close()

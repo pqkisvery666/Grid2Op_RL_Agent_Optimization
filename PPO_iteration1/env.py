@@ -98,14 +98,13 @@ class Gym2OpEnv(gym.Env):
                                                               )
                                           )
 
-        # for even more customization, you can use any functions you want !
         shape_ = (self._g2op_env.dim_topo, self._g2op_env.dim_topo)
         self._gym_env.observation_space.add_key("connectivity_matrix",
-                                          lambda obs: obs.connectivity_matrix(),  # can be any function returning a gym space
+                                          lambda obs: obs.connectivity_matrix(), 
                                           Box(shape=shape_,
                                               low=np.zeros(shape_),
                                               high=np.ones(shape_),
-                                            )  # this "Box" should represent the return type of the above function
+                                            ) 
                                           )
         self._gym_env.observation_space = ob_space
         
@@ -142,5 +141,4 @@ env = Gym2OpEnv()
 print(f"The \"env_gym\" is a gym environment: {isinstance(env, gym.Env)}")
     
 print(env.action_space)
-# Print observation space
 print(env.observation_space)

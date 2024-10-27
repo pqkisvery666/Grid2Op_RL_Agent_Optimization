@@ -97,16 +97,13 @@ class Gym2OpEnv(gym.Env):
                                                                )
                                            )
 
-        # for even more customization, you can use any functions you want !
         shape_ = (self._g2op_env.dim_topo, self._g2op_env.dim_topo)
         self._gym_env.observation_space.add_key("connectivity_matrix",
                                                 lambda obs: obs.connectivity_matrix(),
-                                                # can be any function returning a gym space
                                                 Box(shape=shape_,
                                                     low=np.zeros(shape_),
                                                     high=np.ones(shape_),
                                                     )
-                                                # this "Box" should represent the return type of the above function
                                                 )
         self._gym_env.observation_space = ob_space
 
@@ -132,9 +129,6 @@ class Gym2OpEnv(gym.Env):
 
     def reset(self, seed=None, options=None):
         obs, info = self._gym_env.reset(seed=seed, options=options)
-        # parsed_obs = self.print_observation_details(obs)
-        # rho = parsed_obs['rho']
-        # print("rho:", rho)
 
         return obs, info
 

@@ -61,24 +61,15 @@ class Gym2OpEnv(gym.Env):
         self.action_space = self._gym_env.action_space
 
     def setup_observations(self):
-        # TODO: Your code to specify & modify the observation space goes here
         self._gym_env.observation_space = BoxGymObsSpace(self._g2op_env.observation_space)
-        # See Grid2Op 'getting started' notebooks for guidance
-        #  - Notebooks: https://github.com/rte-france/Grid2Op/tree/master/getting_started
-        print("WARNING: setup_observations is not doing anything. Implement your own code in this method.")
+
 
     def setup_actions(self):
-        # TODO: Your code to specify & modify the action space goes here
         self._gym_env.action_space = BoxGymActSpace(self._g2op_env.action_space)
-        # See Grid2Op 'getting started' notebooks for guidance
-        #  - Notebooks: https://github.com/rte-france/Grid2Op/tree/master/getting_started
-        print("WARNING: setup_actions is not doing anything. Implement your own code in this method.")
+
 
     def reset(self, seed=None, options=None):
         obs, info = self._gym_env.reset(seed=seed, options=options)
-        # parsed_obs = self.print_observation_details(obs)
-        # rho = parsed_obs['rho']
-        # print("rho:", rho)
         
         return obs, info
 

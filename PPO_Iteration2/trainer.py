@@ -13,18 +13,17 @@ from env import Gym2OpEnv
 
 class DictFeatureExtractor(BaseFeaturesExtractor):
     def __init__(self, observation_space: Dict, features_dim: int = 128):
-        # Initialize the parent class
         super().__init__(observation_space, features_dim)
 
         # Calculate total input size from all observation components
         self.total_input_size = 0
         for space in observation_space.spaces.values():
-            if len(space.shape) == 1:  # 1D observations
+            if len(space.shape) == 1: 
                 self.total_input_size += space.shape[0]
-            else:  # Handle multi-dimensional observations
+            else:  
                 self.total_input_size += np.prod(space.shape)
 
-        # Define network architecture
+        # network architecture
         self.shared_net = nn.Sequential(
             nn.Linear(self.total_input_size, 256),
             nn.ReLU(),
@@ -35,7 +34,6 @@ class DictFeatureExtractor(BaseFeaturesExtractor):
         )
 
     def forward(self, observations):
-        # Convert dictionary observations to a single tensor
         tensors = []
         for key, value in observations.items():
             if isinstance(value, np.ndarray):
@@ -43,24 +41,22 @@ class DictFeatureExtractor(BaseFeaturesExtractor):
             else:
                 tensor = value.to(self.shared_net[0].weight.device)
 
-            # Handle both batched and unbatched inputs
             if tensor.dim() == 1:
                 tensor = tensor.unsqueeze(0)
             tensors.append(tensor.view(tensor.shape[0], -1))
 
-        # Concatenate all tensors
         combined = torch.cat(tensors, dim=1)
         return self.shared_net(combined)
 
 
 class CustomGridPolicy(ActorCriticPolicy):
     def __init__(self, observation_space, action_space, lr_schedule, *args, **kwargs):
-        # Initialize with proper network architecture
+        # network architecture
         super().__init__(
             observation_space,
             action_space,
             lr_schedule,
-            net_arch=dict(pi=[64, 64], vf=[64, 64]),  # Simplified architecture
+            net_arch=dict(pi=[64, 64], vf=[64, 64]), 
             features_extractor_class=DictFeatureExtractor,
             features_extractor_kwargs=dict(features_dim=128),
             *args,
@@ -69,7 +65,6 @@ class CustomGridPolicy(ActorCriticPolicy):
 
 
 def train_improved_ppo_agent(env, total_timesteps=1000000):
-    # Create vectorized environment first
     env = DummyVecEnv([lambda: env])
 
     model = PPO(
@@ -87,12 +82,11 @@ def train_improved_ppo_agent(env, total_timesteps=1000000):
 
     model.save("ppo_grid_improved1mil")
     return model
-# Example usage:
+
 if __name__ == "__main__":
 
     logdir = "PPO_logs\logs"
     env = Gym2OpEnv()
     env = Monitor(env, logdir)
 
-    # Train the improved agent
     ppo_agent = train_improved_ppo_agent(env)

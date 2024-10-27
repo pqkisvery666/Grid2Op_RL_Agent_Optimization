@@ -30,7 +30,6 @@ def evaluate_agent(env, agent, num_episodes=10, max_steps=10000):
             curr_return += reward
             all_rewards.append(reward)
             
-            # Track invalid actions
             is_action_valid = not (info["is_illegal"] or info["is_ambiguous"])
             if not is_action_valid:
                 invalid_actions += 1
@@ -109,7 +108,6 @@ def print_summary_statistics(stats):
         print(f"  {reason}: {count}")
     print("###################")
 
-# Main execution
 if __name__ == "__main__":
     
     env = Gym2OpEnv()

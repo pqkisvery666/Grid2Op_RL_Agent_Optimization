@@ -63,7 +63,7 @@ class Gym2OpEnv(gym.Env):
         self.observation_space = self._gym_env.observation_space
         self.action_space = self._gym_env.action_space
 
-    def parse_gym_observation(self, obs):
+    def parse_gym_observation(self, obs): #ignore these were for understanding of the spaces
         """
         Parse the flattened Gym observation array into its constituent parts.
 
@@ -75,23 +75,18 @@ class Gym2OpEnv(gym.Env):
         """
         idx = 0
 
-        # Parse line status (20 values)
         line_status = obs[idx:idx + 20]
         idx += 20
 
-        # Parse load_p (11 values)
         load_p = obs[idx:idx + 11]
         idx += 11
 
-        # Parse prod_p (6 values)
         prod_p = obs[idx:idx + 6]
         idx += 6
 
-        # Parse rho (20 values)
         rho = obs[idx:idx + 20]
         idx += 20
 
-        # Parse topo_vect (57 values)
         topo_vect = obs[idx:idx + 57]
 
         return {
@@ -111,26 +106,7 @@ class Gym2OpEnv(gym.Env):
         """
         parsed_obs = self.parse_gym_observation(obs)
 
-        # print("\n=== Parsed Gym Observation ===")
-        # print(f"\nLine Status (20 lines):")
-        # for i, status in enumerate(parsed_obs['line_status']):
-        #     print(f"Line {i}: {'Connected' if status == 1 else 'Disconnected'}")
-
-        # print(f"\nLoad Power Consumption (11 loads):")
-        # for i, load in enumerate(parsed_obs['load_p']):
-        #     print(f"Load {i}: {load:.1f} MW")
-
-        # print(f"\nGenerator Production (6 generators):")
-        # for i, prod in enumerate(parsed_obs['prod_p']):
-        #     print(f"Generator {i}: {prod:.1f} MW")
-
-        # print(f"\nLine Usage (rho) (20 lines):")
-        # for i, usage in enumerate(parsed_obs['rho']):
-        #     print(f"Line {i}: {usage*100:.1f}% capacity")
-
-        # print(f"\nTopological Vector (57 elements):")
-        # print("Substation configurations:", parsed_obs['topo_vect'])
-
+        
         return parsed_obs
 
     def setup_observations(self):
