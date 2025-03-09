@@ -58,7 +58,7 @@ stats = evaluate_agent(env, agent, num_episodes=100)
 Training progress can be visualized using Tensorboard:
 
 ```bash
-tensorboard --logdir=PPO_logs  # or SAC_logs for SAC
+tensorboard --logdir=F:\GRL_projects\Grid2Op_RL_Agent_Optimization-main\PPO_baseline_trygrl3\logs  # or SAC_logs for SAC
 ```
 
 ## Implementation Details
